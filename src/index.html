@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>飞行试验检查单 · 双支离线修订复核</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <h1>飞行试验检查单 · 双支离线修订复核</h1>
+  <p class="subtitle">
+    两支离线修订回传后，在合并为可执行步骤表前完成操作变换：墓碑序列定位、
+    按 (分支名, 操作标识) 稳定裁定并发插入、合并重复效果、拒绝语义冲突。
+  </p>
+</header>
+
+<main>
+  <section class="panel input-panel">
+    <div class="panel-head">
+      <h2>① 录入基线与两支修订</h2>
+      <div class="btn-row">
+        <button type="button" id="btnExampleOk" class="btn btn-ghost">载入：可合并示例</button>
+        <button type="button" id="btnExampleConflict" class="btn btn-ghost">载入：冲突示例</button>
+        <button type="button" id="btnClear" class="btn btn-ghost">清空</button>
+      </div>
+    </div>
+
+    <div class="grid-input">
+      <div class="field field-wide">
+        <label for="baseline">
+          基线步骤 <span class="fmt">格式：<code>标识: 文本</code>（标识须为唯一 ASCII：A-Za-z0-9_.@-）</span>
+        </label>
+        <textarea id="baseline" spellcheck="false" rows="8"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="nameL">左支分支名</label>
+        <input id="nameL" type="text" spellcheck="false" value="air">
+        <label for="opsL" class="ops-label">
+          左支操作（至多 80 条，按发生顺序）
+          <span class="fmt"><code>OPID insert 新标识 after 锚点: 文本</code> ·
+          <code>OPID delete 目标</code> · <code>OPID replace 目标: 新文本</code>
+          （锚点可用 <code>HEAD</code>/<code>首位</code>）</span>
+        </label>
+        <textarea id="opsL" spellcheck="false" rows="10"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="nameR">右支分支名</label>
+        <input id="nameR" type="text" spellcheck="false" value="ground">
+        <label for="opsR" class="ops-label">右支操作（至多 80 条，按发生顺序）</label>
+        <textarea id="opsR" spellcheck="false" rows="10"></textarea>
+      </div>
+    </div>
+
+    <div class="btn-row main-actions">
+      <button type="button" id="btnMerge" class="btn btn-primary">复核并合并</button>
+      <span id="staleHint" class="stale-hint" hidden>输入已变更，旧结论已作废，请重新复核。</span>
+    </div>
+  </section>
+
+  <section id="result" class="panel result-panel" aria-live="polite">
+    <div class="placeholder" id="resultPlaceholder">
+      ② 复核结论将显示在这里——通过时给出规范合并步骤表与每条操作的保留 / 转换 / 合并结果；
+      冲突时给出首个冲突的双方操作及变换依据。
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  所有计算均在浏览器本地完成；标识寻址，不按序号落修改。
+</footer>
+
+<script src="domain.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
